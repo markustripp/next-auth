@@ -232,7 +232,13 @@ async function getOAuth2 (provider, accessToken, results) {
     if (provider.id === 'twitch') {
       headers['Client-ID'] = provider.clientId
     }
+
     accessToken = null
+  }
+
+  if (provider.id === 'shopify-app') {
+	headers['X-Shopify-Access-Token'] = accessToken
+	accessToken = null
   }
 
   if (provider.id === 'bungie') {

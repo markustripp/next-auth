@@ -4,6 +4,13 @@ import GitHubProvider from "next-auth/providers/github"
 import Auth0Provider from "next-auth/providers/auth0"
 import TwitterProvider from "next-auth/providers/twitter"
 import CredentialsProvider from "next-auth/providers/credentials"
+import ShopifyAppProvider from "next-auth/providers/shopify-app"
+import * as Fauna from "faunadb";
+import { FaunaAdapter } from "@next-auth/fauna-adapter";
+
+const client = new Fauna.Client({
+	secret: process.env.FAUNADB_SECRET
+});
 
 // import Adapters from 'next-auth/adapters'
 // import { PrismaClient } from '@prisma/client'
@@ -32,6 +39,10 @@ export default NextAuth({
   //   }
   // },
   providers: [
+	ShopifyAppProvider({
+		clientId: process.env.SHOPIFY_APP_ID,
+      	clientSecret: process.env.SHOPIFY_APP_SECRET,
+	}),
     EmailProvider({
       server: process.env.EMAIL_SERVER,
       from: process.env.EMAIL_FROM,
@@ -88,4 +99,5 @@ export default NextAuth({
   // npx prisma generate
   // npx prisma migrate dev
   // adapter: Adapters.Prisma.Adapter({ prisma })
+  adapter: FaunaAdapter({ faunaClient: client }),
 })

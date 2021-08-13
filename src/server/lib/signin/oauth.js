@@ -19,7 +19,11 @@ export default async function getAuthorizationUrl (req) {
       ...params,
       redirect_uri: provider.callbackUrl
     })
-
+	
+	if (provider.id === 'shopify-app') {
+		url = url.replace('{host}', params.host)
+	}
+		
     // If the authorizationUrl specified in the config has query parameters on it
     // make sure they are included in the URL we return.
     //
