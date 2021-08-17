@@ -141,6 +141,14 @@ export default async function callback(req, res) {
 
         await dispatchEvent(events.signIn, { user, account, isNewUser })
 
+				if (provider.id === "shopify-app") {
+					let shopifyCallbackUrl = callbackUrl.substring(0, callbackUrl.lastIndexOf("?"));
+					Object.keys(req.query).forEach((key, index) => {
+						shopifyCallbackUrl += index === 0 ? '?' : '&' + key + '=' + req.query[key];
+					})
+					return res.redirect(shopifyCallbackUrl)
+        }
+
         // Handle first logins on new accounts
         // e.g. option to send users to a new account landing page on initial login
         // Note that the callback URL is preserved, so the journey can still be resumed

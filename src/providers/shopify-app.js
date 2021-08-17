@@ -6,15 +6,15 @@ export default function ShopifyApp(options) {
     version: "2.0",
     scope: "read_products,write_products",
     useAuthTokenHeader: false,
-    accessTokenUrl: "https://{host}/admin/oauth/access_token",
-    authorizationUrl: "https://{host}/admin/oauth/authorize",
-    profileUrl:
-      "https://checkout-meilisearch-dev.myshopify.com/admin/api/2021-04/shop.json",
+    accessTokenUrl: "https://{shop}/admin/oauth/access_token",
+    authorizationUrl: "https://{shop}/admin/oauth/authorize",
+    profileUrl: "https://{shop}/admin/api/2021-07/shop.json",
     profile(profile) {
+			console.log('profile', profile)
       return {
         id: profile.shop.id,
-        name: profile.shop.name,
-        email: profile.shop.name,
+        name: profile.shop.domain,
+        email: profile.shop.domain,
       }
     },
     protection: "state",
