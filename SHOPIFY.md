@@ -19,7 +19,7 @@ Provider configuration for Shopify app development
 Replace authorization url with the shop passed as parameter to `signIn()`
 ```javascript
 if (provider.id === 'shopify-app') {
-	provider.authorizationUrl = provider.authorizationUrl.replace('{shop}', params.shop)
+  provider.authorizationUrl = provider.authorizationUrl.replace('{shop}', params.shop)
 }
 ```
 
@@ -28,7 +28,7 @@ Replace url to retrieve access token and profile with the shop retrieved as call
 ```javascript
 if (provider.id === "shopify-app") {
   provider.accessTokenUrl = provider.accessTokenUrl.replace('{shop}', req.query.shop)
-	provider.profileUrl = provider.profileUrl.replace('{shop}', req.query.shop)
+  provider.profileUrl = provider.profileUrl.replace('{shop}', req.query.shop)
 }
 ```
 
