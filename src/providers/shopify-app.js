@@ -9,12 +9,11 @@ export default function ShopifyApp(options) {
     accessTokenUrl: "https://{shop}/admin/oauth/access_token",
     authorizationUrl: "https://{shop}/admin/oauth/authorize",
     profileUrl: "https://{shop}/admin/api/2021-07/shop.json",
-    profile(profile) {
-			console.log('profile', profile)
+    profile(profile, tokens) {
       return {
         id: profile.shop.id,
-        name: profile.shop.domain,
-        email: profile.shop.domain,
+        name: profile.shop.name,
+        email: profile.shop.domain
       }
     },
     protection: "state",

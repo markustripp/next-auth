@@ -8,7 +8,9 @@ Differences to standard NextAuth.js oAuth flow:
 - The oAuth authentication is performed for each individual store the app is installed. Therefore the oAuth endpoints for accessTokenUrl, authorizationUrl, profileUrl are shop dependent.
 - Shopify API calls pass the access token in a "X-Shopify-Access-Token" header instead of the standard "Bearer".
 
-In addition Shopify requires HMAC to verify the authenticity of requests from Shopify and session tokens (JWT) for communication. Even if I think with this setup JWT authentication could be omitted.
+In addition Shopify requires HMAC to verify the authenticity of requests from Shopify and session tokens (JWT) for communication.
+
+The complete Shopify oAuth registration flow is covered by NextAuth.js. At the end of the signIn flow please add a callback function in [...nextauth].js to store the shop domain and access token.
 
 Changes in NextAuth.js required for Shopify app authentication:
 
@@ -38,6 +40,19 @@ Set Shopify access token header to for authentication to retrieve profile data.
 if (provider.id === 'shopify-app') {
   headers['X-Shopify-Access-Token'] = accessToken
   accessToken = null
+}
+```
+
+**./src/server/routes/callback.js** (line 144 to 151)
+Redirect back to initial callback url
+```javascript
+if (provider.id === "shopify-app") {
+	let shopifyCallbackUrl = callbackUrl.substring(0, callbackUrl.lastIndexOf("?"));
+	Object.keys(req.query).forEach((key, index) => {
+		const separator = index === 0 ? "?" : "&"
+		shopifyCallbackUrl += separator + key + "=" + req.query[key]
+	})
+	return res.redirect(shopifyCallbackUrl)
 }
 ```
 

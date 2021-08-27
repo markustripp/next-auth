@@ -9,8 +9,6 @@ export default async function oAuthCallback(req) {
   const client = oAuthClient(provider)
 
   if (provider.version?.startsWith("2.")) {
-    console.log("oAuthCallback", req.query, provider)
-
     // The "user" object is specific to the Apple provider and is provided on first sign in
     // e.g. {"name":{"firstName":"Johnny","lastName":"Appleseed"},"email":"johnny.appleseed@nextauth.com"}
     let { code, user } = req.query // eslint-disable-line camelcase
@@ -44,16 +42,9 @@ export default async function oAuthCallback(req) {
       client.useAuthorizationHeaderforGET(true)
     }
 
-    // verify hmac
-    // replace ${shop} in provider urls with req.query.shop parameter or result from verify hmac
-
     if (provider.id === "shopify-app") {
-			const params = req.query
-			console.log('OAuth Shopify callback', params)
-      // const params = verifyHmac(req.query)
-      // if (!params) throw new OAuthCallbackError('HMAC verification failed')
-      provider.accessTokenUrl = provider.accessTokenUrl.replace("{shop}", params.shop)
-			provider.profileUrl = provider.profileUrl.replace("{shop}", params.shop)
+      provider.accessTokenUrl = provider.accessTokenUrl.replace('{shop}', req.query.shop)
+			provider.profileUrl = provider.profileUrl.replace('{shop}', req.query.shop)
     }
 
     try {

@@ -100,4 +100,9 @@ export default NextAuth({
   // npx prisma migrate dev
   // adapter: Adapters.Prisma.Adapter({ prisma })
   adapter: FaunaAdapter({ faunaClient: client }),
+	callbacks: {
+		async signIn(user, account, profile) {
+			// store profile.domain (shop) and account.accessToken (token)
+		}
+	}
 })

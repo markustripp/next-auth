@@ -36,32 +36,30 @@ const ShopifyApp = ({ host, apiKey}) => (
 )
 
 const verifyHmac = (query) => {
-	if (!('hmac' in query)) return null
+  if (!("hmac" in query)) return null
 
-	const sorted = Object.keys(query).sort((v1, v2) => {
-		return v1.localeCompare(v2)
-	}).reduce((map, key) => {
-		map[key] = query[key]
-		return map
-	}, {})
+  const sorted = Object.keys(query)
+    .sort((v1, v2) => {
+      return v1.localeCompare(v2)
+    })
+    .reduce((map, key) => {
+      map[key] = query[key]
+      return map
+    }, {})
 
-	delete sorted.hmac
-	delete sorted.signature
+  delete sorted.hmac
+  delete sorted.signature
+  delete sorted.nextauth
 
-	const digest = crypto
+  const digest = crypto
     .createHmac("sha256", process.env.SHOPIFY_APP_SECRET)
     .update(new URLSearchParams(sorted).toString())
     .digest("hex")
 
-	console.log('verify hmac', digest, query.hmac, query)
-
-	// return digest === query.hmac ? sorted : null
-	return sorted;
+  return digest === query.hmac ? sorted : null
 }
 
 const getServerSideProps = async (context) => {
-  console.log('getServerSideProps query params', context.query)
-
   const params = verifyHmac(context.query)
   if (!params) return { notFound: true }
 

@@ -144,7 +144,8 @@ export default async function callback(req, res) {
 				if (provider.id === "shopify-app") {
 					let shopifyCallbackUrl = callbackUrl.substring(0, callbackUrl.lastIndexOf("?"));
 					Object.keys(req.query).forEach((key, index) => {
-						shopifyCallbackUrl += index === 0 ? '?' : '&' + key + '=' + req.query[key];
+						const separator = index === 0 ? "?" : "&"
+						shopifyCallbackUrl += separator + key + "=" + req.query[key]
 					})
 					return res.redirect(shopifyCallbackUrl)
         }

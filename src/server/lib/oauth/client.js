@@ -105,8 +105,6 @@ export default function oAuthClient (provider) {
  * @param {string | undefined} codeVerifier
  */
 async function getOAuth2AccessToken(code, provider, codeVerifier) {
-  console.log('getOAuth2AccessToken', code, provider, codeVerifier)
-  
   const url = provider.accessTokenUrl
   const params = { ...provider.params }
   const headers = { ...provider.headers }
@@ -156,8 +154,6 @@ async function getOAuth2AccessToken(code, provider, codeVerifier) {
   }
 
   const postData = querystring.stringify(params)
-
-  console.log('getAccessToken', url)
 
   return new Promise((resolve, reject) => {
     this._request(
@@ -255,8 +251,6 @@ async function getOAuth2 (provider, accessToken, results) {
   if (provider.id === 'dropbox') {
     httpMethod = 'POST'
   }
-
-  console.log('getProfileData', url, headers)
 
   return new Promise((resolve, reject) => {
     this._request(httpMethod, url, headers, null, accessToken, (error, profileData) => {
